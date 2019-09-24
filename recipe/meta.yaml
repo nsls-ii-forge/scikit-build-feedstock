@@ -1,6 +1,6 @@
 {% set name = "scikit-build" %}
-{% set version = "0.9.0" %}
-{% set sha256 = "b7ac5a574ca5a4b0891aeaf5b0340de9fdc88d0081669dca494cef5b9fa760b0" %}
+{% set version = "0.10.0" %}
+{% set sha256 = "2beec252813b20327072c15e9d997f15972aedcc6a130d0154979ff0fdb1b010" %}
 
 package:
   name: {{ name|lower }}
