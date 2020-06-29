@@ -1,6 +1,6 @@
 {% set name = "scikit-build" %}
-{% set version = "0.10.0" %}
-{% set sha256 = "7342017cc82dd6178e3b19377389b8a8d1f8b429d9cdb315cfb1094e34a0f526" %}
+{% set version = "0.11.1" %}
+{% set sha256 = "da40dfd69b2456fad1349a894b90180b43712152b8a85d2a00f4ae2ce8ac9a5c" %}
 
 package:
   name: {{ name|lower }}
@@ -12,8 +12,7 @@ source:
 
 build:
   number: 0
-  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv"
-  skip: True  # [py<36]
+  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
 
 requirements:
   build:
@@ -24,41 +23,46 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     - python
+    - packaging
     - pip
+    - setuptools
+    - wheel
   run:
     - python
     - cmake
-    - packaging
+    - distro
     - ninja
+    - packaging
     - setuptools
     - wheel
 
 test:
-  imports:
-    - skbuild
   source_files:
     - tests/*
   requires:
-    - {{ compiler('c') }}  # [linux]
-    - {{ compiler('cxx') }}  # [linux]
+    - cmake
+    - cython
+    - git
+    - make  # [unix]
     - mock
+    - ninja
     - path.py
     - pytest
-    - pytest-mock
     - pytest-cov
+    - pytest-mock
     - pytest-runner
-    - six
-    - git
-    - cmake
-    - ninja
-    - cython
     - requests
+    - six
+    - {{ compiler('c') }}  # [unix]
+    - {{ compiler('cxx') }}  # [unix]
+  imports:
+    - skbuild
 
 about:
   home: http://github.com/scikit-build/scikit-build
   license: MIT
   license_family: MIT
   license_file: LICENSE
-  summary: 'Improved build system generator for CPython C extensions.'
+  summary: Improved build system generator for CPython C extensions.
   doc_url: http://scikit-build.readthedocs.org
   dev_url: http://github.com/scikit-build/scikit-build
