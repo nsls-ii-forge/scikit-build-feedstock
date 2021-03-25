@@ -8,19 +8,15 @@ jobs:
     vmImage: vs2017-win2016
   strategy:
     matrix:
-      win_python3.6:
-        CONFIG: win_python3.6
+      win_64_python3.7:
+        CONFIG: win_64_python3.7
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: nsls2/nsls2forge:latest
-      win_python3.7:
-        CONFIG: win_python3.7
+      win_64_python3.8:
+        CONFIG: win_64_python3.8
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: nsls2/nsls2forge:latest
-      win_python3.8:
-        CONFIG: win_python3.8
+      win_64_python3.9:
+        CONFIG: win_64_python3.9
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: nsls2/nsls2forge:latest
-    maxParallel: 4
   timeoutInMinutes: 360
   variables:
     CONDA_BLD_PATH: D:\\bld\\
@@ -62,7 +58,7 @@ jobs:
 
     - task: CondaEnvironment@1
       inputs:
-        packageSpecs: 'python=3.6 conda-build conda conda-forge::conda-forge-ci-setup=3 pip' # Optional
+        packageSpecs: 'python=3.6 conda-build conda "conda-forge-ci-setup=3" pip' # Optional
         installOptions: "-c conda-forge"
         updateConda: true
       displayName: Install conda-build and activate environment
@@ -104,6 +100,7 @@ jobs:
 
     - script: |
         set "GIT_BRANCH=%BUILD_SOURCEBRANCHNAME%"
+        set "FEEDSTOCK_NAME=%BUILD_REPOSITORY_NAME:*/=%"
         set "UPLOAD_ON_BRANCH=master"
         call activate base
         upload_package  .\ ".\recipe" .ci_support\%CONFIG%.yaml
