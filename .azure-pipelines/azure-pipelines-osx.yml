@@ -5,22 +5,18 @@
 jobs:
 - job: osx
   pool:
-    vmImage: macOS-10.14
+    vmImage: macOS-10.15
   strategy:
     matrix:
-      osx_python3.6:
-        CONFIG: osx_python3.6
+      osx_64_python3.7:
+        CONFIG: osx_64_python3.7
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: nsls2/nsls2forge:latest
-      osx_python3.7:
-        CONFIG: osx_python3.7
+      osx_64_python3.8:
+        CONFIG: osx_64_python3.8
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: nsls2/nsls2forge:latest
-      osx_python3.8:
-        CONFIG: osx_python3.8
+      osx_64_python3.9:
+        CONFIG: osx_64_python3.9
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: nsls2/nsls2forge:latest
-    maxParallel: 8
   timeoutInMinutes: 360
 
   steps:
@@ -29,6 +25,7 @@ jobs:
       export CI=azure
       export OSX_FORCE_SDK_DOWNLOAD="1"
       export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+      export FEEDSTOCK_NAME=$(basename ${BUILD_REPOSITORY_NAME})
       export UPLOAD_ON_BRANCH="master"
       ./.scripts/run_osx_build.sh
     displayName: Run OSX build
